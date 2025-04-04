@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="uz">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Joylashuvni aniqlash</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 20px;
+            }
+            
+            #location-info {
+                margin-top: 20px;
+                text-align: left;
+                display: inline-block;
+            }
+            
+            iframe {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-top: 10px;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                background: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+            }
+            
+            button:hover {
+                background: #0056b3;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h1>Joylashuvni aniqlash</h1>
+        <button onclick="fetchLocation()">Joylashuvni aniqlash</button>
+
+        <div id="location-info"></div>
+
+        <script>
+            function fetchLocation() {
+                fetch("https://ipinfo.io/94.230.231.210?token=f886e5ada401a4")
+                    .then(response => response.json())
+                    .then(data => {
+                        let infoHTML = `
+                        <p><strong>IP Manzil:</strong> ${data.ip}</p>
+                        <p><strong>Mamlakat:</strong> ${data.country}</p>
+                        <p><strong>Shahar:</strong> ${data.city}</p>
+                        <p><strong>Internet Provayder:</strong> ${data.org}</p>
+                    `;
+
+                        if (data.loc) {
+                            infoHTML += `
+                            <p><strong>Kenglik, Uzunlik:</strong> ${data.loc}</p>
+                            <iframe src="https://www.google.com/maps?q=${data.loc}&output=embed"></iframe>
+                        `;
+                        }
+
+                        document.getElementById("location-info").innerHTML = infoHTML;
+                    })
+                    .catch(error => {
+                        document.getElementById("location-info").innerHTML = "<p style='color:red;'>Xatolik yuz berdi!</p>";
+                        console.error("Xatolik:", error);
+                    });
+            }
+        </script>
+
+    </body>
+
+    </html>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
